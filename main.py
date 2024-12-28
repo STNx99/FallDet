@@ -6,7 +6,7 @@ from utils.plots import output_to_keypoint
 
 model = YOLO('yolov8m-pose.pt')
 
-video_path = "falltest.mp4"
+video_path = "falltest3.mp4"
 cap = cv2.VideoCapture(video_path)
 
 while cap.isOpened():
@@ -30,13 +30,26 @@ while cap.isOpened():
                 print(f"Nose: x={nose_x:.2f}, y={nose_y:.2f}")
                 print(f"Left Hip: x={left_hip_x:.2f}, y={left_hip_y:.2f}")
                 print(f"Right Hip: x={right_hip_x:.2f}, y={right_hip_y:.2f}")
-
-                if (nose_y > left_hip_y or nose_y > right_hip_y or
-                    (left_hip_y - nose_y) < 30 or (right_hip_y - nose_y) < 30):
-                    print("Ngã!")
+                if(nose_y != 0 and left_hip_y != 0 and right_hip_y != 0 ):
+                    if (nose_y > left_hip_y
+                            or nose_y > right_hip_y
+                            or (left_hip_y - nose_y) < 30
+                            or (right_hip_y - nose_y) < 30):
+                        print("Ngã!")
+                        cv2.putText(
+                            frame,
+                            "Fall Detected!",
+                            (50, 50),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            1,
+                            (0, 0, 255),
+                            2,
+                            cv2.LINE_AA
+                        )
+                else:
                     cv2.putText(
                         frame,
-                        "Fall Detected!",
+                        "Chua the nhan dien",
                         (50, 50),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1,
